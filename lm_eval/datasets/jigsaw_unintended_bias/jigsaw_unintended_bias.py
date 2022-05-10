@@ -122,30 +122,20 @@ class JigsawUnintendedBias(datasets.GeneratorBasedBuilder):
 
         return [
             datasets.SplitGenerator(
-                name=datasets.Split.TRAIN,
-                # These kwargs will be passed to _generate_examples
-                gen_kwargs={"path": os.path.join(data_dir, "train.csv"), "split": "train"},
-            ),
-            datasets.SplitGenerator(
                 name=datasets.Split("test_private_leaderboard"),
                 # These kwargs will be passed to _generate_examples
                 gen_kwargs={"path": os.path.join(data_dir, "test_private_expanded.csv"), "split": "test"},
-            ),
-            datasets.SplitGenerator(
-                name=datasets.Split("test_public_leaderboard"),
-                # These kwargs will be passed to _generate_examples
-                gen_kwargs={"path": os.path.join(data_dir, "test_public_expanded.csv"), "split": "test"},
-            ),
+            )
         ]
 
-    def _generate_examples(self, split: str = "train", path: str = None):
+    def _generate_examples(self, split: str = "test", path: str = None):
         """Yields examples."""
         # This method will receive as arguments the `gen_kwargs` defined in the previous `_split_generators` method.
         # It is in charge of opening the given file and yielding (key, example) tuples from the dataset
         # The key is not important, it's more here for legacy reason (legacy from tfds)
 
         # Avoid loading everything into memory at once
-        all_data = pd.read_csv(path, chunksize=50000)
+        all_data = pd.read_csv(path, nrows=5000)
 
         for data in all_data:
             if split != "train":

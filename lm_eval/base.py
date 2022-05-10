@@ -474,7 +474,7 @@ class Task(abc.ABC):
             name=self.DATASET_NAME,
             data_dir=data_dir,
             cache_dir=cache_dir,
-            download_mode=download_mode,
+            download_mode=download_mode, 
         )
 
     @abstractmethod
@@ -613,7 +613,7 @@ class PromptSourceTask(Task):
         cache_dir=None,
         download_mode=None,
         prompt=None,
-        save_examples=True,
+        save_examples=False,
     ):
         super().__init__(data_dir, cache_dir, download_mode)
         self.prompt = prompt
